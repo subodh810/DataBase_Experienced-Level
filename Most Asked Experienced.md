@@ -1,0 +1,56 @@
+Q. How does an index work internally?
+>>Index
+
+>A database index is a data structure, typically implemented using a Balanced Tree, that improves the speed of data retrieval operations by allowing the database to locate rows without scanning the entire table.
+
+>It significantly improves query performance for SELECT, JOIN, WHERE, and ORDER BY operations, but adds storage overhead and can slow down INSERT, UPDATE, and DELETE operations because the index must be maintained.
+
+>Example<br>
+
+>Imagine an Orders table containing 100 million records.<br>
+          
+          SELECT *
+          FROM Orders
+          WHERE OrderId = 987654321;
+
+>Without index → Database scans millions of rows.<br>
+>With index on OrderId → Database directly jumps to the row.
+
+#Clustered Index
+
+>A Clustered Index is an index in which the table rows are physically stored in the same order as the index keys. 
+
+>The leaf nodes of the clustered index contain the actual data pages.
+
+>Since a table's data can only be physically sorted in one order, only one clustered index can exist per table & it is automatically created when we define primary key.
+
+>Clustered indexes provide excellent performance for primary key lookups, range queries, and sorting operations.
+
+
+#non-clustered indexes
+
+>A Non-Clustered Index is a separate Balanced Tree structure that stores indexed column values along with pointers to the actual table rows. 
+
+>Unlike a Clustered Index, it does not determine the physical order of data storage.
+
+>Multiple non-clustered indexes can exist on a table, making them useful for speeding up searches, filtering, joins, and sorting on different columns.
+
+>However, they consume extra storage and add overhead to insert, update, and delete operations because the index must be maintained.
+
+#Composite Key
+
+>A Composite Key is a key formed by combining two or more columns to uniquely identify a record when a single column is insufficient. 
+
+>It is commonly used in junction or mapping tables such as Student-Course, Order-Product, and Employee-Project relationships.
+
+#Internal Working
+
+>>Internally, a database index is usually implemented as a Balanced-Tree. 
+
+>The index stores key values in sorted order along with pointers to the corresponding data rows.
+
+>During query execution, the database traverses the B-Tree from the root node to the leaf node, reducing the search complexity from O(n) for a full table scan to approximately O(log n). 
+
+>In a clustered index, leaf nodes contain the actual data rows, whereas in a non-clustered index, leaf nodes contain row pointers. This allows databases to retrieve data with very few disk I/O operations, making lookups, joins, sorting, and range queries significantly faster.
+
+>When defined as a Primary Key, it enforces uniqueness on the combination of columns and automatically creates a composite index to optimize searches based on those columns.
